@@ -26,10 +26,31 @@ async function seed() {
     },
   });
 
+  const createdScreen = await prisma.screen.create({
+    data: {
+      number: 1,
+      seats: {
+        create: [
+          { number: 1, row: "A" },
+          { number: 6, row: "B" },
+          { number: 12, row: "C" },
+        ],
+      },
+    },
+  });
+
   const createdScreening = await prisma.screening.create({
     data: {
       startsAt: new Date("August 27, 2022 12:00:00"),
       movieId: createdMovie.id,
+      screenId: createdScreen.id,
+    },
+  });
+
+  const createdTicket = await prisma.ticket.create({
+    data: {
+      customerId: createdCustomer.id,
+      screeningId: createdScreening.id,
     },
   });
 
